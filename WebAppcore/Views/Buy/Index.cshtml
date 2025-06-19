@@ -1,0 +1,332 @@
+﻿@model List<WebAppcore.Models.Product>
+
+@{
+    ViewData["Title"] = "Book Collection";
+}
+
+<style>
+    :root {
+        --primary-blue: #1a73e8;
+        --dark-blue: #0d47a1;
+        --light-blue: #e8f0fe;
+        --accent-blue: #4285f4;
+        --white: #ffffff;
+        --gray-light: #f5f7fa;
+        --gray-medium: #dadce0;
+        --gray-dark: #5f6368;
+    }
+
+    .book-collection-container {
+        padding: 20px;
+        background: linear-gradient(135deg, var(--light-blue) 0%, var(--white) 100%);
+        min-height: 100vh;
+        font-family: 'Google Sans', 'Segoe UI', Roboto, sans-serif;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .book-collection-container::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(66,133,244,0.1) 0%, rgba(255,255,255,0) 70%);
+        z-index: 0;
+        animation: float 8s infinite ease-in-out;
+    }
+
+   
+
+    .dashboard-header {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        position: relative;
+        z-index: 1;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dashboard-header h2 {
+        color: var(--primary-blue);
+        font-weight: 600;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .dashboard-header h2 i {
+        margin-right: 10px;
+    }
+
+    .card-book {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: var(--white);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+        z-index: 1;
+        height: 100%;
+    }
+
+    .card-book:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        background: linear-gradient(90deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
+        color: white;
+        font-weight: 500;
+        padding: 15px;
+        position: relative;
+    }
+
+    .card-header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 0;
+        font-weight: 500;
+    }
+
+    .card-body {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .book-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+    .card-book:hover .book-image {
+        transform: scale(1.03);
+    }
+
+    .product-details {
+        margin-bottom: 15px;
+    }
+
+    .card-text {
+        color: var(--gray-dark);
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    .card-text strong {
+        color: var(--dark-blue);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid var(--gray-medium);
+        padding: 10px 15px;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        outline: none;
+    }
+
+    .input-group-text {
+        background-color: var(--light-blue);
+        color: var(--primary-blue);
+        border-color: var(--gray-medium);
+    }
+
+    .btn-custom {
+        background: linear-gradient(to right, var(--primary-blue), var(--accent-blue));
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        box-shadow: 0 2px 6px rgba(26, 115, 232, 0.3);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-custom:hover {
+        background: linear-gradient(to right, var(--dark-blue), var(--primary-blue));
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .btn-custom:active {
+        transform: translateY(0);
+    }
+
+    .btn-custom i {
+        margin-right: 8px;
+    }
+
+    .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(66, 133, 244, 0.1);
+        animation: float 15s infinite linear;
+    }
+
+    .shape:nth-child(1) {
+        width: 100px;
+        height: 100px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+        left: 80%;
+        animation-delay: 2s;
+        animation-duration: 20s;
+    }
+
+    .shape:nth-child(3) {
+        width: 70px;
+        height: 70px;
+        top: 80%;
+        left: 20%;
+        animation-delay: 4s;
+        animation-duration: 12s;
+    }
+
+    .alert {
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-top: 15px;
+    }
+</style>
+
+<div class="book-collection-container">
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h2><i class="fas fa-book-open"></i> Book Collection</h2>
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["error"]</div>
+        }
+    </div>
+
+    <!-- Book Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var product in Model)
+        {
+            <div class="col">
+                <div class="card card-book">
+                    <div class="card-header">
+                        <h5 class="card-title">@product.Reference</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <img src="~/images/richman book.jpg" 
+                                 class="book-image"
+                                 alt="@product.Reference" />
+                        </div>
+                        <div class="product-details">
+                            <p class="card-text"><strong>Price:</strong> @product.Prix.ToString("0.00") DT</p>
+                            <p class="card-text"><strong>Category:</strong> @(product.Category?.Name ?? "No Category")</p>
+                            <p class="card-text"><strong>Available:</strong> @product.Qte in stock</p>
+                        </div>
+
+                        <form asp-action="Command" asp-controller="Buy" method="post" class="mt-auto">
+                            <input type="hidden" name="Ref" value="@product.Reference" />
+
+                            <div class="form-group">
+                                <label for="quantity-@product.Reference" class="card-text">Quantity</label>
+                                <div class="input-group">
+                                    <input type="number"
+                                           id="quantity-@product.Reference"
+                                           name="Qte"
+                                           class="form-control"
+                                           min="1"
+                                           max="@product.Qte"
+                                           value="1"
+                                           required />
+                                    <div class="input-group-text">units</div>
+                                </div>
+                                <small class="form-text text-muted">
+                                    Maximum @product.Qte available
+                                </small>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-3">
+                                <button type="submit" class="btn btn-custom">
+                                    <i class="fas fa-shopping-cart"></i> Buy Now
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+}

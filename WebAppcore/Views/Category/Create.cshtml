@@ -1,0 +1,171 @@
+﻿@model Category
+
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<style>
+    /* Global Body/Page Styles for consistency */
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: #f0f2f5; /* Light grey background */
+        color: #333;
+    }
+
+    .container.mt-4 {
+        padding-top: 40px; /* More top padding for overall page */
+        padding-bottom: 40px;
+    }
+
+    /* Form Container Styling - TRENDY */
+    .form-container {
+        padding: 40px; /* Increased padding */
+        background: linear-gradient(135deg, #ffffff, #fdfdfd); /* Soft gradient background */
+        border-radius: 15px; /* More rounded corners */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+        max-width: 700px; /* Limit form width for better readability */
+        margin: auto; /* Center the form container */
+    }
+
+    /* Form Heading - TRENDY */
+    .form-container h2 {
+        color: #2c3e50; /* Darker blue-grey */
+        font-weight: 700;
+        margin-bottom: 20px; /* Spacing below heading */
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+    }
+
+    /* Horizontal Rule - TRENDY */
+    .form-container hr {
+        border-top: 2px solid #e0e0e0; /* Thicker, softer hr */
+        margin-top: 15px;
+        margin-bottom: 25px;
+    }
+
+    /* Form Labels - TRENDY */
+    .form-label {
+        font-weight: 600; /* Bolder labels */
+        color: #34495e; /* Darker color for prominence */
+        margin-bottom: 8px; /* Spacing below label */
+        display: block; /* Ensure label takes full width */
+    }
+
+    /* Form Controls (Inputs, Selects) - TRENDY */
+    .form-control, .form-select {
+        border-radius: 8px; /* Slightly more rounded */
+        border: 1px solid #dcdfe4; /* Softer border color */
+        padding: 12px 15px; /* Increased padding */
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle inner shadow */
+        transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+        font-size: 1rem; /* Consistent font size */
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #3498db; /* Blue focus border */
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25); /* Bootstrap-like focus glow */
+        outline: none; /* Remove default outline */
+    }
+
+    /* Validation Spans (add if you implement validation) */
+    .text-danger {
+        font-size: 0.875em; /* Slightly smaller for errors */
+        margin-top: 5px;
+        display: block; /* Ensure it's on its own line */
+    }
+
+    /* Button Group at bottom */
+    .d-flex.gap-3 {
+        margin-top: 30px; /* More space above buttons */
+        justify-content: flex-end; /* Align buttons to the right */
+    }
+
+    /* General Button Styles - TRENDY (applies to btn-primary and btn-secondary) */
+    .btn {
+        padding: 12px 25px; /* Larger padding */
+        border-radius: 30px; /* Pill shape */
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease; /* Smooth transitions for all hover effects */
+        border: none; /* Remove default button border */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Initial subtle shadow */
+        cursor: pointer;
+        min-width: 160px; /* Ensure buttons have a minimum width */
+        display: inline-flex; /* Use flex to align icon and text */
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px); /* Lift effect on hover */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    }
+
+    .btn i {
+        margin-right: 8px; /* Spacing between icon and text */
+        font-size: 1.1em; /* Slightly larger icon */
+    }
+
+    /* Primary Button - TRENDY GRADIENT for Create action (often green) */
+    .btn-primary {
+        background: linear-gradient(45deg, #28a745 0%, #218838 100%); /* Green gradient for Create */
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #218838 0%, #1c7430 100%); /* Darker green gradient on hover */
+    }
+
+    /* Secondary Button - TRENDY GRADIENT */
+    .btn-secondary {
+        background: linear-gradient(45deg, #6c757d 0%, #495057 100%); /* Grey gradient */
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: linear-gradient(45deg, #5a6268 0%, #3f4448 100%); /* Darker grey gradient on hover */
+    }
+
+    
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="form-container">
+        <form method="post">
+            <div class="border-bottom pb-3 mb-4">
+                <div class="row">
+                    <h2 class="text-primary">Create New Category</h2>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Category Name</label>
+                <input asp-for="Name" type="text" class="form-control" />
+                @* You can add a validation span here if you have model validation for Name *@
+                @* <span asp-validation-for="Name" class="text-danger"></span> *@
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DisplayOrder" class="form-label">Display Order</label>
+                <input asp-for="DisplayOrder" type="number" class="form-control" />
+                @* You can add a validation span here if you have model validation for DisplayOrder *@
+                @* <span asp-validation-for="DisplayOrder" class="text-danger"></span> *@
+            </div>
+
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i> Create Category
+                </button>
+                <a asp-controller="Category" asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Category List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

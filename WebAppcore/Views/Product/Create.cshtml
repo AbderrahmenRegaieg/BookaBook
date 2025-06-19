@@ -1,0 +1,202 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<style>
+    /* Global Body/Page Styles for consistency */
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: #f0f2f5; /* Light grey background */
+        color: #333;
+    }
+
+    .container.mt-4 {
+        padding-top: 40px; /* More top padding for overall page */
+        padding-bottom: 40px;
+    }
+
+    /* Form Container Styling - TRENDY */
+    .form-container {
+        padding: 40px; /* Increased padding */
+        background: linear-gradient(135deg, #ffffff, #fdfdfd); /* Soft gradient background */
+        border-radius: 15px; /* More rounded corners */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+        max-width: 700px; /* Limit form width for better readability */
+        margin: auto; /* Center the form container */
+    }
+
+    /* Form Heading - TRENDY */
+    .form-container h2 {
+        color: #2c3e50; /* Darker blue-grey */
+        font-weight: 700;
+        margin-bottom: 20px; /* Spacing below heading */
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+    }
+
+    /* Horizontal Rule - TRENDY */
+    .form-container hr {
+        border-top: 2px solid #e0e0e0; /* Thicker, softer hr */
+        margin-top: 15px;
+        margin-bottom: 25px;
+    }
+
+    /* Form Labels - TRENDY */
+    .form-label {
+        font-weight: 600; /* Bolder labels */
+        color: #34495e; /* Darker color for prominence */
+        margin-bottom: 8px; /* Spacing below label */
+        display: block; /* Ensure label takes full width */
+    }
+
+    /* Form Controls (Inputs, Selects) - TRENDY */
+    .form-control, .form-select {
+        border-radius: 8px; /* Slightly more rounded */
+        border: 1px solid #dcdfe4; /* Softer border color */
+        padding: 12px 15px; /* Increased padding */
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle inner shadow */
+        transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+        font-size: 1rem; /* Consistent font size */
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #3498db; /* Blue focus border */
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25); /* Bootstrap-like focus glow */
+        outline: none; /* Remove default outline */
+    }
+
+    /* Validation Spans */
+    .text-danger {
+        font-size: 0.875em; /* Slightly smaller for errors */
+        margin-top: 5px;
+        display: block; /* Ensure it's on its own line */
+    }
+
+    /* Button Group at bottom */
+    .d-flex.gap-3 {
+        margin-top: 30px; /* More space above buttons */
+        justify-content: flex-end; /* Align buttons to the right */
+    }
+
+    /* General Button Styles - TRENDY (applies to btn-custom and btn-secondary-custom) */
+    .btn {
+        padding: 12px 25px; /* Larger padding */
+        border-radius: 30px; /* Pill shape */
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease; /* Smooth transitions for all hover effects */
+        border: none; /* Remove default button border */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Initial subtle shadow */
+        cursor: pointer;
+        min-width: 160px; /* Ensure buttons have a minimum width */
+        display: inline-flex; /* Use flex to align icon and text */
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px); /* Lift effect on hover */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    }
+
+    .btn i {
+        margin-right: 8px; /* Spacing between icon and text */
+        font-size: 1.1em; /* Slightly larger icon */
+    }
+
+    /* Primary/Custom Button - TRENDY GRADIENT */
+    .btn-custom {
+        background: linear-gradient(45deg, #28a745 0%, #218838 100%); /* Green gradient for Create */
+        color: white;
+    }
+
+    .btn-custom:hover {
+        background: linear-gradient(45deg, #218838 0%, #1c7430 100%); /* Darker green gradient on hover */
+    }
+
+    /* Secondary Button - TRENDY GRADIENT */
+    .btn-secondary-custom {
+        background: linear-gradient(45deg, #6c757d 0%, #495057 100%); /* Grey gradient */
+        color: white;
+    }
+
+    .btn-secondary-custom:hover {
+        background: linear-gradient(45deg, #5a6268 0%, #3f4448 100%); /* Darker grey gradient on hover */
+    }
+
+    /* Responsive Adjustments */
+    @@media (max-width: 768px) {
+        .form-container {
+            padding: 25px;
+            margin: 15px; /* Add margin on smaller screens */
+        }
+        .d-flex.gap-3 {
+            flex-direction: column; /* Stack buttons vertically */
+            gap: 15px !important; /* Space between stacked buttons */
+        }
+        .btn {
+            width: 100%; /* Full width buttons when stacked */
+            min-width: unset; /* Remove min-width when stacked */
+        }
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="form-container">
+        <form method="post">
+            <div class="border-bottom pb-3 mb-4">
+                <div class="row">
+                    <h2 class="text-primary">Create New Product</h2>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Reference" class="form-label">Product Reference</label>
+                <input asp-for="Reference" type="text" class="form-control" />
+                <span asp-validation-for="Reference" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Prix" class="form-label">Price</label>
+                <input asp-for="Prix" type="number" step="0.01" class="form-control" />
+                <span asp-validation-for="Prix" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Qte" class="form-label">Quantity</label>
+                <input asp-for="Qte" type="number" min="0" class="form-control" />
+                <span asp-validation-for="Qte" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Path" class="form-label">Image Path</label>
+                <input asp-for="Path" type="text" class="form-control" />
+                <span asp-validation-for="Path" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label">Category</label>
+                <select asp-for="CategoryId" class="form-select" asp-items="@(new SelectList(ViewBag.list, "Id", "Name"))">
+                    <option value="">-- Select a Category --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-custom"> @* Corrected class to btn-custom *@
+                    <i class="bi bi-plus-lg"></i> Create Product
+                </button>
+                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary-custom"> @* Corrected class to btn-secondary-custom *@
+                    <i class="bi bi-arrow-left"></i> Back to Product List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

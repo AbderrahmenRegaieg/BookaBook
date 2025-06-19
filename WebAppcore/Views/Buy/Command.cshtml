@@ -1,0 +1,384 @@
+﻿@model WebAppcore.Models.CommandClient
+
+@{
+    ViewData["Title"] = "Order Validation";
+}
+
+<style>
+    :root {
+        --primary-blue: #1a73e8;
+        --dark-blue: #0d47a1;
+        --light-blue: #e8f0fe;
+        --accent-blue: #4285f4;
+        --white: #ffffff;
+        --gray-light: #f5f7fa;
+        --gray-medium: #dadce0;
+        --gray-dark: #5f6368;
+        --success-green: #00c851;
+    }
+
+    .order-container {
+        padding: 20px;
+        background: linear-gradient(135deg, var(--light-blue) 0%, var(--white) 100%);
+        min-height: 100vh;
+        font-family: 'Google Sans', 'Segoe UI', Roboto, sans-serif;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .order-container::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(66,133,244,0.1) 0%, rgba(255,255,255,0) 70%);
+        z-index: 0;
+        animation: float 8s infinite ease-in-out;
+    }
+
+   
+
+    .page-title {
+        color: var(--primary-blue);
+        font-weight: 600;
+        margin-bottom: 2rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .page-title::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 60%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue));
+        border-radius: 2px;
+    }
+
+    .card-order {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: var(--white);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+        z-index: 1;
+        margin-bottom: 1.5rem;
+        height: 100%;
+    }
+
+    .card-order:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header-primary {
+        background: linear-gradient(90deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
+        color: white;
+        font-weight: 500;
+        padding: 15px;
+        position: relative;
+    }
+
+    .card-header-primary::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+    }
+
+    .card-header-success {
+        background: linear-gradient(90deg, var(--success-green) 0%, #007e33 100%);
+        color: white;
+        font-weight: 500;
+        padding: 15px;
+        position: relative;
+    }
+
+    .card-header-success::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+        margin-bottom: 0;
+        font-weight: 500;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+    .card-order:hover .product-image {
+        transform: scale(1.03);
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--white);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .order-table th, .order-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid var(--gray-medium);
+    }
+
+    .order-table th {
+        background-color: var(--light-blue);
+        color: var(--dark-blue);
+        font-weight: 500;
+    }
+
+    .order-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .highlight-row {
+        background-color: rgba(26, 115, 232, 0.05);
+        font-weight: 500;
+    }
+
+    .highlight-row td {
+        color: var(--primary-blue);
+        font-weight: 600;
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: var(--gray-dark);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid var(--gray-medium);
+        padding: 10px 15px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        outline: none;
+    }
+
+    .form-check {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-check-input {
+        width: 1.2em;
+        height: 1.2em;
+        margin-top: 0.2em;
+    }
+
+    .form-check-label {
+        margin-left: 0.5rem;
+        color: var(--gray-dark);
+    }
+
+    .btn-confirm {
+        background: linear-gradient(to right, var(--success-green), #007e33);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        box-shadow: 0 2px 6px rgba(0, 200, 81, 0.3);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-confirm:hover {
+        background: linear-gradient(to right, #007e33, var(--success-green));
+        box-shadow: 0 4px 12px rgba(0, 200, 81, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .btn-confirm:active {
+        transform: translateY(0);
+    }
+
+    .btn-confirm i {
+        margin-right: 8px;
+    }
+
+    .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(66, 133, 244, 0.1);
+        animation: float 15s infinite linear;
+    }
+
+    .shape:nth-child(1) {
+        width: 100px;
+        height: 100px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+        left: 80%;
+        animation-delay: 2s;
+        animation-duration: 20s;
+    }
+
+    .shape:nth-child(3) {
+        width: 70px;
+        height: 70px;
+        top: 80%;
+        left: 20%;
+        animation-delay: 4s;
+        animation-duration: 12s;
+    }
+</style>
+
+<div class="order-container">
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">
+            <i class="fas fa-clipboard-check"></i> Order Validation
+        </h1>
+
+        <div class="row g-4">
+            <!-- Order Summary Card -->
+            <div class="col-lg-8">
+                <div class="card card-order">
+                    <div class="card-header card-header-primary">
+                        <h3 class="card-title">Order Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-4 mb-md-0">
+                                <img src="@Model.Product.Path"
+                                     class="product-image"
+                                     alt="@Model.Product.Reference" />
+                            </div>
+                            <div class="col-md-8">
+                                <h4 class="mb-3">@Model.Product.Reference</h4>
+                                <table class="order-table">
+                                    <tr>
+                                        <th>Reference</th>
+                                        <td>@Model.Product.Reference</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Unit Price</th>
+                                        <td>@Model.Product.Prix.ToString("0.00") DT</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Quantity</th>
+                                        <td>@Model.OrderedQuantity</td>
+                                    </tr>
+                                    <tr class="highlight-row">
+                                        <th>Total</th>
+                                        <td>@Model.TotalPrice.ToString("0.00") DT</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Validation Card -->
+            <div class="col-lg-4">
+                <div class="card card-order">
+                    <div class="card-header card-header-success">
+                        <h3 class="card-title">Complete Your Order</h3>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="ConfirmOrder" asp-controller="Buy" method="post">
+                            <input type="hidden" name="Reference" value="@Model.Product.Reference" />
+                            <input type="hidden" name="Qte" value="@Model.OrderedQuantity" />
+
+                            <div class="form-group">
+                                <label for="paymentMethod" class="form-label">Payment Method</label>
+                                <select class="form-control" id="paymentMethod" name="PaymentMethod">
+                                    <option value="Card">Credit Card</option>
+                                    <option value="CashOnDelivery">Cash on Delivery</option>
+                                </select>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="terms" name="TermsAccepted" required>
+                                <label class="form-check-label" for="terms">
+                                    I accept the terms and conditions
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-confirm">
+                                <i class="fas fa-check-circle"></i> Confirm Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+}
